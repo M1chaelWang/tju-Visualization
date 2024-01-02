@@ -95,7 +95,7 @@ function updateChart(data) {
         .attr("x", width - 50)
         .attr("text", "end")
         .attr("stroke", "black")
-        .text("时间");
+        .text("时刻");
 
     g.append("g")
         .call(d3.axisLeft(yScale1))
@@ -199,6 +199,15 @@ function updateChart(data) {
         });
 
     // draw lines
+    reveal = (path) =>
+        path
+            .transition()
+            .duration(500)
+            .ease(d3.easeLinear)
+            .attrTween("stroke-dasharray", function () {
+                const length = this.getTotalLength();
+                return d3.interpolate(`0,${length}`, `${length},${length}`);
+            });
     let lnMkr1 = d3
         .line()
         .curve(d3.curveNatural)
@@ -208,7 +217,9 @@ function updateChart(data) {
     g.append("path")
         .attr("fill", "none")
         .attr("d", lnMkr1(data))
-        .attr("stroke", "steelblue");
+        .attr("stroke", "steelblue")
+        .call(reveal)
+        .node();
 
     let lnMkr2 = d3
         .line()
@@ -219,7 +230,9 @@ function updateChart(data) {
     g.append("path")
         .attr("fill", "none")
         .attr("d", lnMkr2(data))
-        .attr("stroke", "blue");
+        .attr("stroke", "blue")
+        .call(reveal)
+        .node();
 }
 
 loadData();
