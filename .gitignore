@@ -1,1 +1,3 @@
+data/*.csv
 data/Haikou_Order/*
+data/Haikou_Order_Cleaned/*

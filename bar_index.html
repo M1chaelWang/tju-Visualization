@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Bar Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-simple-slider"></script>
+    <style>
+        .bar {
+            fill: steelblue;
+        }
+
+        .bar:hover {
+            fill: orange;
+        }
+
+        .axis-label {
+            font-size: 12px;
+        }
+
+        .slider {
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+<svg width="1200" height="800"></svg>
+<div id="slider"></div>
+<div id="slider-vertical"></div>
+
+<script>
+
+    // 加载 CSV 数据
+    d3.csv("./data/result.csv").then(data => {
+        data.forEach(d => {
+            d.Date = d3.timeParse("%Y-%m-%d")(d.Date);
+            d.Count = +d.Count;
+        });
+
+        // 设置 SVG 画布的尺寸和边距
+        const margin = {top: 20, right: 20, bottom: 70, left: 40},
+            width = 600 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        // 在 SVG 中添加一个 `g` 元素
+        const svg = d3.select("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // 设置 x 和 y 轴的比例尺
+        const x = d3.scaleBand().range([0, width]).padding(0.1),
+            y = d3.scaleLinear().range([height, 0]);
+
+        // 定义 x 轴和 y 轴
+        const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")),
+            yAxis = d3.axisLeft(y);
+
+        // 初始化显示的数据范围和最大条形图数量
+        var maxBars = 7;
+        var displayData = data.slice(0, maxBars);
+        // 设置比例尺的域
+        x.domain(displayData.map(d => d.Date));
+        y.domain([0, d3.max(displayData, d => d.Count)]);
+
+        // 绘制柱状图
+        svg.selectAll(".bar")
+            .data(displayData)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x(d.Date))
+            .attr("width", x.bandwidth())
+            .attr("y", d => y(d.Count))
+            .attr("height", d => height - y(d.Count));
+
+        // 添加 x 轴和 y 轴
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-65)");
+
+        svg.append("g")
+            .call(yAxis);
+
+// 创建水平滑块
+        var slider = d3.sliderBottom()
+            .min(d3.min(data, d => d.Date))
+            .max(d3.max(data, d => d.Date))
+            .step(1000 * 60 * 60 * 24) // 一天
+            .width(500)
+            .tickFormat(d3.timeFormat("%Y-%m-%d"))
+            .ticks(5)
+            .default(d3.min(data, d => d.Date))
+            .fill('#2196f3')
+            .on('onchange', val => {
+                var startIndex = data.findIndex(d => d.Date.getTime() === val.getTime());
+                var endIndex = Math.min(startIndex + maxBars, data.length); // 确保不会超出数组范围
+                updateBars(data.slice(startIndex, endIndex));
+            });
+        var gSlider = d3.select('#slider')
+            .append('svg')
+            .attr('width', 600)
+            .attr('height', 100)
+            .append('g')
+            .attr('transform', 'translate(30,30)');
+
+        gSlider.call(slider);
+        // 创建垂直滑块
+        var sliderVertical = d3.sliderLeft()
+            .min(1)
+            .max(20) // 假设最多显示20个条形图
+            .step(1)
+            .height(300)
+            .tickFormat(d3.format('d'))
+            .ticks(20)
+            .default(maxBars)
+            .on('onchange', val => {
+                maxBars = val;
+                updateBars(data.slice(0, maxBars));
+            });
+
+        var gSliderVertical = d3.select('#slider-vertical')
+            .append('svg')
+            .attr('width', 100)
+            .attr('height', 350)
+            .append('g')
+            .attr('transform', 'translate(60,30)');
+
+        gSliderVertical.call(sliderVertical);
+        // 更新柱状图的函数
+        function updateBars(newData) {
+            x.domain(newData.map(d => d.Date));
+            y.domain([0, d3.max(newData, d => d.Count)]);
+
+            var bars = svg.selectAll(".bar")
+                .data(newData, d => d.Date);
+
+            bars.enter()
+                .append("rect")
+                .attr("class", "bar")
+                .merge(bars)
+                .attr("x", d => x(d.Date))
+                .attr("width", x.bandwidth())
+                .attr("y", d => y(d.Count))
+                .attr("height", d => height - y(d.Count));
+
+            bars.exit().remove();
+
+            svg.select(".x.axis")
+                .call(xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-65)");
+
+            svg.select(".y.axis")
+                .call(yAxis);
+        }
+    });
+
+</script>
+</body>
+</html>
