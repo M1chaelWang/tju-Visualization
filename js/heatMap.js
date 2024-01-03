@@ -6,16 +6,18 @@ $.get('./data/Haikou_Order_Cleaned/cleaned_data_test.csv', function (data) {
     complete: function (result) {
       const data = result.data;
       
-      const map = new AMap.Map('map', {
+      const map = new AMap.Map('heatMap', {
         mapStyle: 'amap://styles/grey',
-        zoom: 12.0,
-        center: [110.33, 20.01]
+        zoom: 13,
+        pitch: 30,
+        center: [110.33, 20.01],
+        viewMode: '3D'
       });
 
-      const layer = new Loca.PointCloudLayer({
+      var layer = new Loca.HeatmapLayer({
         map: map,
-        visible: true
-      });
+    });
+
 
       data.forEach(function (item) {
         item.departure_time = new Date(item.departure_time);
@@ -29,22 +31,28 @@ $.get('./data/Haikou_Order_Cleaned/cleaned_data_test.csv', function (data) {
           return item.departure_time >= currentTime && item.departure_time < new Date(currentTime.getTime() + 60 * 60 * 1000); // 1 hour interval
         });
 
+
         layer.setData(filteredData, {
           lnglat: function (obj) {
             var val = obj.value;
             var lnglat = [val['starting_lng'], val['starting_lat']];
             return lnglat;
           },
+          value: 'normal_time',
           type: 'json'
         });
-
         layer.setOptions({
           style: {
-            radius: 100,
-            color: '#4FC2FF',
-            opacity: 0.9,
+              radius: 16,
+              color: {
+                  0.5: '#2c7bb6',
+                  0.65: '#abd9e9',
+                  0.7: '#ffffbf',
+                  0.9: '#fde468',
+                  1.0: '#d7191c'
+              }
           }
-        });
+      });
 
         layer.render();
 
@@ -53,7 +61,7 @@ $.get('./data/Haikou_Order_Cleaned/cleaned_data_test.csv', function (data) {
         const endTime = (startTimeh + 1) % 24; // Assuming 1-hour intervals
       }
 
-      setInterval(updatePointCloud, 100); // Update every second
+      setInterval(updatePointCloud, 1000); // Update every second
       updatePointCloud(); // Initial update
       
     }

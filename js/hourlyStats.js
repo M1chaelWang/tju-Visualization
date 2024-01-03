@@ -1,7 +1,6 @@
-let svg = d3.select("#line1"),
-    margin = 200,
-    width = svg.attr("width") - margin,
-    height = svg.attr("height") - margin;
+let svg = d3.select("#line");
+let width = 350,
+    height = 250;
 let xScale = d3.scaleLinear().range([0, width]),
     yScale1 = d3.scaleLinear().range([height, 0]),
     yScale2 = d3.scaleLinear().range([height, 0]);
@@ -16,7 +15,7 @@ let currentData = data1;
 let index = 1;
 document.addEventListener("DOMContentLoaded", function () {
     var dataSetElement = document.getElementById("dataSetName");
-    dataSetElement.innerHTML = "当前数据集：" + getCurrentData();
+    dataSetElement.innerHTML = getCurrentData();
 });
 
 function loadData() {
@@ -60,7 +59,7 @@ function toggleData() {
             break;
     }
     var dataSetElement = document.getElementById("dataSetName");
-    dataSetElement.innerHTML = "当前数据集：" + getCurrentData();
+    dataSetElement.innerHTML = getCurrentData();
 }
 
 function getCurrentData() {
@@ -90,30 +89,39 @@ function updateChart(data) {
     g.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale))
-        .append("text")
-        .attr("y", height - 400)
-        .attr("x", width - 50)
-        .attr("text", "end")
-        .attr("stroke", "black")
-        .text("时刻");
+        .selectAll("text")
+        .attr("fill", "white");
 
     g.append("g")
         .call(d3.axisLeft(yScale1))
-        .append("text")
-        .attr("y", 6)
-        .attr("dy", "-4em")
-        .attr("text", "end")
-        .attr("stroke", "black")
-        .text("平均订单量");
+        .selectAll("text")
+        .attr("fill", "white");
 
     g.append("g")
         .call(d3.axisRight(yScale2))
         .attr("transform", "translate(" + width + " ,0)")
-        .append("text")
+        .selectAll("text")
+        .attr("fill", "white");
+    g.selectAll(".domain").attr("stroke", "white");
+    g.selectAll(".tick line").attr("stroke", "white");
+
+    g.append("text")
+        .attr("y", height + 40)
+        .attr("x", width - 50)
+        .attr("fill", "white")
+        .text("时刻");
+
+    g.append("text")
         .attr("y", 6)
-        .attr("dy", "-4em")
-        .attr("text", "end")
-        .attr("stroke", "black")
+        .attr("dy", "-2em")
+        .attr("fill", "white")
+        .text("平均订单量");
+
+    g.append("text")
+        .attr("y", 6)
+        .attr("dy", "-2em")
+        .attr("fill", "white")
+        .attr("x", height)
         .text("平均里程数");
 
     g.selectAll(".firstCircle")
@@ -125,10 +133,10 @@ function updateChart(data) {
         .attr("r", 4)
         .attr("cx", (d) => xScale(d["hour"]))
         .attr("cy", (d) => yScale1(d["average_order_count"]))
-        .attr("fill", "steelblue")
+        .attr("fill", "rgb(255, 190, 68)")
         .on("mouseover", function (event, d) {
             // 在鼠标悬停时显示信息
-            d3.select(this).attr("r", 8).attr("fill", "orange");
+            d3.select(this).attr("r", 8).attr("fill", "steelblue");
 
             // 添加信息提示框
             g.append("text")
@@ -145,11 +153,12 @@ function updateChart(data) {
                 .style("opacity", 0)
                 .transition()
                 .duration(200)
-                .style("opacity", 1);
+                .style("opacity", 1)
+                .style("fill", "white");
         })
         .on("mouseout", function () {
             // 鼠标移出时移除信息提示框
-            d3.select(this).attr("r", 4).attr("fill", "steelblue");
+            d3.select(this).attr("r", 4).attr("fill", "rgb(255, 190, 68)");
 
             g.selectAll(".tooltip")
                 .transition()
@@ -167,9 +176,9 @@ function updateChart(data) {
         .attr("r", 4)
         .attr("cx", (d) => xScale(d["hour"]))
         .attr("cy", (d) => yScale2(d["average_distance"] / 1000))
-        .attr("fill", "blue")
+        .attr("fill", "rgb(255, 255, 104)")
         .on("mouseover", function (event, d) {
-            d3.select(this).attr("r", 8).attr("fill", "orange");
+            d3.select(this).attr("r", 8).attr("fill", "steelblue");
 
             g.append("text")
                 .attr("class", "tooltip")
@@ -186,10 +195,11 @@ function updateChart(data) {
                 .style("opacity", 0)
                 .transition()
                 .duration(200)
-                .style("opacity", 1);
+                .style("opacity", 1)
+                .style("fill", "white");
         })
         .on("mouseout", function () {
-            d3.select(this).attr("r", 4).attr("fill", "blue");
+            d3.select(this).attr("r", 4).attr("fill", "rgb(255, 255, 104)");
 
             g.selectAll(".tooltip")
                 .transition()
@@ -217,7 +227,7 @@ function updateChart(data) {
     g.append("path")
         .attr("fill", "none")
         .attr("d", lnMkr1(data))
-        .attr("stroke", "steelblue")
+        .attr("stroke", "rgb(255, 190, 68)")
         .call(reveal)
         .node();
 
@@ -230,7 +240,7 @@ function updateChart(data) {
     g.append("path")
         .attr("fill", "none")
         .attr("d", lnMkr2(data))
-        .attr("stroke", "blue")
+        .attr("stroke", "rgb(255, 255, 104)")
         .call(reveal)
         .node();
 }

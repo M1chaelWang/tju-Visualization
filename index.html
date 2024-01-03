@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Index</title>
+        <script src="js/d3.js"></script>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-simple-slider"></script>
+        <link rel="stylesheet" href="css/index.css" />
+        <link
+            href="framework/font-awesome/css/font-awesome.min.css"
+            rel="stylesheet"
+        />
+        <script src="js/index.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="statsBox">
+                <p class="title">海口市交通分析可视化系统</p>
+                <div class="stats">
+                    <ul>
+                        <li>
+                            <i class="fa fa-file-text-o"></i>
+                            <p>日均订单量</p>
+                            <p>64172</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-car"></i>
+                            <p>快车占比</p>
+                            <p>99.06%</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-money"></i>
+                            <p>高价占比(费用>40￥)</p>
+                            <p>6.69%</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-road"></i>
+                            <p>高时长占比(时长>30min)</p>
+                            <p>7.51%</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="charts">
+                <div class="lineAndMap">
+                    <div class="mapBox">
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script src="https://webapi.amap.com/loader.js"></script>
+                        <script src="https://webapi.amap.com/maps?key=88590dc9c9d603d9a17f79cb4e1827bf&v=1.4.15&plugin=Map3D"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+                        <script src="https://webapi.amap.com/loca?key=88590dc9c9d603d9a17f79cb4e1827bf&v=1.3.0"></script>
+                        <div id="map"></div>
+
+                        <script src="./js/map.js"></script>
+                        <div id="heatMap"></div>
+                        <script
+                            type="text/javascript"
+                            src="js/heatMap.js"
+                        ></script>
+
+                        <div id="startHex"></div>
+                        <script src="./js/start_hex.js"></script>
+
+                        <div id="destHex"></div>
+                        <script src="./js/dest_hex.js"></script>
+                        <ul class="buttons">
+                            <li>
+                                <button onclick="toMap1()">订单点云图</button>
+                            </li>
+                            <li>
+                                <button onclick="toMap2()">
+                                    订单距离热力图
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="toMap3()">
+                                    起始点蜂窝热力图
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="toMap4()">
+                                    目的地蜂窝热力图
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="lineChart">
+                        <div class="line">
+                            <svg id="line" width="500" height="400"></svg>
+                        </div>
+                        <script
+                            type="text/javascript"
+                            src="js/hourlyStats.js"
+                        ></script>
+                        <div class="button">
+                            <div id="dataSetName"></div>
+                            <button onclick="toggleData()">切换数据集</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="barCharAndLegend">
+                    <div class="barChart">
+                        <div class="barAndVerticalSlider">
+                            <svg id="bar" width="500" height="300"></svg>
+                            <div id="slider-vertical"></div>
+                        </div>
+                        <div id="slider"></div>
+                        <div id="tooltip"></div>
+                        <script
+                            type="text/javascript"
+                            src="js/bar_index.js"
+                        ></script>
+                    </div>
+                    <ul class="legend">
+                        <div class="barLegend">
+                            <li class="first">
+                                <i class="fa fa-square"></i>
+                                最高气温
+                            </li>
+                            <li class="second">
+                                <i class="fa fa-square"></i>
+                                平均气温
+                            </li>
+                            <li class="third">
+                                <i class="fa fa-square"></i>
+                                最低气温
+                            </li>
+                        </div>
+                        <div class="lineLegend">
+                            <li class="first">
+                                <i class="fa fa-square"></i>
+                                平均订单量
+                            </li>
+                            <li class="second">
+                                <i class="fa fa-square"></i>
+                                平均里程数
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

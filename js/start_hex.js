@@ -6,16 +6,16 @@ $.get('./data/Haikou_Order_Cleaned/cleaned_data_test.csv', function (data) {
     complete: function (result) {
       const data = result.data;
       
-      const map = new AMap.Map('map', {
+      const map = new AMap.Map('startHex', {
         mapStyle: 'amap://styles/grey',
-        zoom: 12.0,
+        zoom: 13,
         center: [110.33, 20.01]
       });
 
-      const layer = new Loca.PointCloudLayer({
+      var layer = new Loca.HexagonLayer({
         map: map,
-        visible: true
-      });
+        fitView: true
+    });
 
       data.forEach(function (item) {
         item.departure_time = new Date(item.departure_time);
@@ -29,22 +29,27 @@ $.get('./data/Haikou_Order_Cleaned/cleaned_data_test.csv', function (data) {
           return item.departure_time >= currentTime && item.departure_time < new Date(currentTime.getTime() + 60 * 60 * 1000); // 1 hour interval
         });
 
+
         layer.setData(filteredData, {
           lnglat: function (obj) {
             var val = obj.value;
             var lnglat = [val['starting_lng'], val['starting_lat']];
             return lnglat;
           },
+          value:'value',
           type: 'json'
         });
-
+        
         layer.setOptions({
+          mode: 'count',
+          unit: 'meter',
           style: {
-            radius: 100,
-            color: '#4FC2FF',
-            opacity: 0.9,
+              color: ['#2c7bb6', '#abd9e9', '#ffffbf', '#fde468', '#d7191c'],
+              radius: 200,
+              opacity: 0.9,
+              gap: 30
           }
-        });
+      });
 
         layer.render();
 
@@ -53,7 +58,7 @@ $.get('./data/Haikou_Order_Cleaned/cleaned_data_test.csv', function (data) {
         const endTime = (startTimeh + 1) % 24; // Assuming 1-hour intervals
       }
 
-      setInterval(updatePointCloud, 100); // Update every second
+      setInterval(updatePointCloud, 1000); // Update every second
       updatePointCloud(); // Initial update
       
     }

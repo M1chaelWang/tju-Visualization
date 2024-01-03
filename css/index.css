@@ -1,0 +1,175 @@
+html {
+    height: 100%;
+}
+body {
+    margin: 0;
+}
+.wrapper {
+    width: 100%;
+    background-color: rgb(40, 53, 65);
+    display: flex;
+    justify-content: left;
+    align-items: top;
+}
+.wrapper .statsBox {
+    background-color: #1a2327;
+    background: linear-gradient(to right, #111111, rgb(40, 53, 65));
+    color: white;
+    width: 22vw;
+}
+.wrapper .statsBox .title {
+    font-size: 1.5vw;
+    margin: 0;
+    margin-top: 8vw;
+    text-align: center;
+}
+.wrapper .statsBox .stats {
+    font-size: 2vw;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    margin-top: 5vw;
+    width: 20vw;
+}
+.wrapper .statsBox .stats ul {
+    list-style-type: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-content: center;
+}
+.wrapper .statsBox .stats ul li {
+    width: 5vw;
+    display: flex;
+    margin: 1vw;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+}
+.wrapper .statsBox .stats ul li i {
+    margin-top: 2vw;
+    font-size: 2vw;
+    color: white;
+}
+.wrapper .statsBox .stats ul li p {
+    margin-top: 1vw;
+    margin-bottom: 0;
+    font-size: 1vw;
+}
+.wrapper .statsBox .stats ul li :last-child {
+    font-size: 1.5vw;
+    color: orange;
+    font-weight: bold;
+}
+.wrapper .charts .lineAndMap {
+    display: flex;
+    justify-content: left;
+    align-items: top;
+    margin: 0;
+}
+.wrapper .charts .lineAndMap .buttons {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    margin-top: 0.5vw;
+}
+.wrapper .charts .lineAndMap .buttons li {
+    margin-right: 0.5vw;
+}
+.wrapper .charts .lineAndMap #map {
+    width: 45vw;
+    height: 25vw;
+}
+.wrapper .charts .lineAndMap #heatMap {
+    width: 45vw;
+    height: 25vw;
+}
+.wrapper .charts .lineAndMap #startHex {
+    width: 45vw;
+    height: 25vw;
+}
+.wrapper .charts .lineAndMap #destHex {
+    width: 45vw;
+    height: 25vw;
+}
+.wrapper .charts .lineAndMap .lineChart .button {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-right: 2vw;
+}
+.wrapper .charts .lineAndMap .lineChart #dataSetName {
+    color: white;
+    margin-right: 2vw;
+}
+
+.wrapper .charts .barCharAndLegend {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.wrapper .charts .barCharAndLegend .barChart {
+    margin: 2vw;
+}
+.wrapper .charts .barCharAndLegend .barChart .barAndVerticalSlider {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 10vw;
+}
+.wrapper .charts .barCharAndLegend .barChart .barAndVerticalSlider .bar {
+    fill: #bed2ee;
+}
+
+.wrapper .charts .barCharAndLegend .barChart .barAndVerticalSlider .bar:hover {
+    fill: orange;
+}
+.wrapper .charts .barCharAndLegend .barChart #slider {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.wrapper .charts .barCharAndLegend .barChart #tooltip {
+    position: absolute;
+    text-align: left;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 1;
+}
+.wrapper .charts .barCharAndLegend .legend {
+    list-style-type: none;
+    font-size: 1vw;
+    color: white;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-left: 4vw;
+}
+.wrapper .charts .barCharAndLegend .legend .barLegend {
+    margin-right: 3vw;
+}
+.wrapper .charts .barCharAndLegend .legend .barLegend .first i {
+    color: #ff5656;
+}
+.wrapper .charts .barCharAndLegend .legend .barLegend .second i {
+    color: rgb(158, 255, 158);
+}
+.wrapper .charts .barCharAndLegend .legend .barLegend .third i {
+    color: rgb(121, 121, 255);
+}
+.wrapper .charts .barCharAndLegend .legend .lineLegend .first i {
+    color: rgb(255, 190, 68);
+}
+.wrapper .charts .barCharAndLegend .legend .lineLegend .second i {
+    color: rgb(255, 255, 104);
+}
