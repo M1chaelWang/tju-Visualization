@@ -19,28 +19,54 @@
                 <p class="title">海口市交通分析可视化系统</p>
                 <div class="stats">
                     <ul>
-                        <li>
+                        <li class="first">
                             <i class="fa fa-file-text-o"></i>
                             <p>日均订单量</p>
                             <p>64172</p>
                         </li>
-                        <li>
+                        <li class="second">
                             <i class="fa fa-car"></i>
                             <p>快车占比</p>
                             <p>99.06%</p>
                         </li>
-                        <li>
+                        <li class="third">
                             <i class="fa fa-money"></i>
                             <p>高价占比(费用>40￥)</p>
                             <p>6.69%</p>
                         </li>
-                        <li>
+                        <li class="fourth">
                             <i class="fa fa-road"></i>
                             <p>高时长占比(时长>30min)</p>
                             <p>7.51%</p>
                         </li>
                     </ul>
                 </div>
+                <ul class="legend">
+                    <div class="barLegend">
+                        <li class="first">
+                            <i class="fa fa-square"></i>
+                            最高气温
+                        </li>
+                        <li class="second">
+                            <i class="fa fa-square"></i>
+                            平均气温
+                        </li>
+                        <li class="third">
+                            <i class="fa fa-square"></i>
+                            最低气温
+                        </li>
+                    </div>
+                    <div class="lineLegend">
+                        <li class="first">
+                            <i class="fa fa-square"></i>
+                            平均订单量
+                        </li>
+                        <li class="second">
+                            <i class="fa fa-square"></i>
+                            平均里程数
+                        </li>
+                    </div>
+                </ul>
             </div>
 
             <div class="charts">
@@ -52,19 +78,19 @@
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
                         <script src="https://webapi.amap.com/loca?key=88590dc9c9d603d9a17f79cb4e1827bf&v=1.3.0"></script>
                         <div id="map"></div>
+                        <div id="heatMap"></div>
+                        <div id="startHex"></div>
+                        <div id="destHex"></div>
+                        <div id="timeSlider1"></div>
+                        <div id="timeSlider2"></div>
+                        <div id="timeSlider3"></div>
+                        <div id="timeSlider4"></div>
 
                         <script src="./js/map.js"></script>
-                        <div id="heatMap"></div>
-                        <script
-                            type="text/javascript"
-                            src="js/heatMap.js"
-                        ></script>
-
-                        <div id="startHex"></div>
+                        <script src="./js/heatMap.js"></script>
                         <script src="./js/start_hex.js"></script>
-
-                        <div id="destHex"></div>
                         <script src="./js/dest_hex.js"></script>
+
                         <ul class="buttons">
                             <li>
                                 <button onclick="toMap1()">订单点云图</button>
@@ -102,10 +128,10 @@
                     </div>
                 </div>
 
-                <div class="barCharAndLegend">
+                <div class="barAndPie">
                     <div class="barChart">
                         <div class="barAndVerticalSlider">
-                            <svg id="bar" width="500" height="300"></svg>
+                            <svg id="bar" width="500" height="280"></svg>
                             <div id="slider-vertical"></div>
                         </div>
                         <div id="slider"></div>
@@ -115,32 +141,13 @@
                             src="js/bar_index.js"
                         ></script>
                     </div>
-                    <ul class="legend">
-                        <div class="barLegend">
-                            <li class="first">
-                                <i class="fa fa-square"></i>
-                                最高气温
-                            </li>
-                            <li class="second">
-                                <i class="fa fa-square"></i>
-                                平均气温
-                            </li>
-                            <li class="third">
-                                <i class="fa fa-square"></i>
-                                最低气温
-                            </li>
-                        </div>
-                        <div class="lineLegend">
-                            <li class="first">
-                                <i class="fa fa-square"></i>
-                                平均订单量
-                            </li>
-                            <li class="second">
-                                <i class="fa fa-square"></i>
-                                平均里程数
-                            </li>
-                        </div>
-                    </ul>
+                    <div class="pieChart">
+                        <svg id="pie" width="430" height="280"></svg>
+                        <script
+                            type="text/javascript"
+                            src="js/pieChart.js"
+                        ></script>
+                    </div>
                 </div>
             </div>
         </div>

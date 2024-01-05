@@ -1,5 +1,5 @@
 // 加载 CSV 数据
-d3.json("data/calendarHeatMap.json").then((data) => {
+d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
     data.forEach((d) => {
         d.Date = d3.timeParse("%Y-%m-%d")(d[0]); // 日期
         d.Count = +d[1]; // 订单数
@@ -9,6 +9,17 @@ d3.json("data/calendarHeatMap.json").then((data) => {
         d.LowTemp = isFinite(d[5]) ? +d[5] : null;
         d.AvgTemp = isFinite(d[6]) ? +d[6] : null;
         d.Holiday = d[7] ? d[7] : "无"; // 节假日
+        d.FastCar = isFinite(d[10]) ? (+d[10]).toFixed(4).padEnd(4, "0") : null;
+        d.HighCost = isFinite(d[11])
+            ? (+d[11]).toFixed(4).padEnd(4, "0")
+            : null;
+        d.LongTime = isFinite(d[12])
+            ? (+d[12]).toFixed(4).padEnd(4, "0")
+            : null;
+        d.County1 = isFinite(d[14]) ? (+d[14]).toFixed(4).padEnd(4, "0") : null;
+        d.County2 = isFinite(d[15]) ? (+d[15]).toFixed(4).padEnd(4, "0") : null;
+        d.County3 = isFinite(d[16]) ? (+d[16]).toFixed(4).padEnd(4, "0") : null;
+        d.County4 = isFinite(d[17]) ? (+d[17]).toFixed(4).padEnd(4, "0") : null;
     });
 
     const tooltip = d3
@@ -20,7 +31,7 @@ d3.json("data/calendarHeatMap.json").then((data) => {
     // 设置 SVG 画布的尺寸和边距
     const margin = { top: 10, right: 20, bottom: 10, left: 50 },
         width = 600 - margin.left - margin.right,
-        height = 200 - margin.top - margin.bottom;
+        height = 220 - margin.top - margin.bottom;
 
     // 在 SVG 中添加一个 `g` 元素
     const svg = d3
@@ -69,6 +80,41 @@ d3.json("data/calendarHeatMap.json").then((data) => {
         节假日: ${d.Holiday}`;
     }
 
+    function updateStats(data) {
+        const date = data.Date;
+        const title = document.querySelector(".stats .first p:nth-child(2)");
+        const stat1 = document.querySelector(".stats .first p:nth-child(3)");
+        const stat2 = document.querySelector(".stats .second p:nth-child(3)");
+        const stat3 = document.querySelector(".stats .third p:nth-child(3)");
+        const stat4 = document.querySelector(".stats .fourth p:nth-child(3)");
+        const formatAsPercentage = (value) => {
+            return (value * 1).toLocaleString("en-US", {
+                style: "percent",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+        };
+
+        title.textContent = "日订单总量";
+        stat1.textContent = data.Count;
+        stat2.textContent = formatAsPercentage(data.FastCar);
+        stat3.textContent = formatAsPercentage(data.HighCost);
+        stat4.textContent = formatAsPercentage(data.LongTime);
+    }
+
+    function restoreOriginalStats() {
+        const title = document.querySelector(".stats .first p:nth-child(2)");
+        const stat1 = document.querySelector(".stats .first p:nth-child(3)");
+        const stat2 = document.querySelector(".stats .second p:nth-child(3)");
+        const stat3 = document.querySelector(".stats .third p:nth-child(3)");
+        const stat4 = document.querySelector(".stats .fourth p:nth-child(3)");
+        title.textContent = "日均订单量";
+        stat1.textContent = 64172;
+        stat2.textContent = "99.06%";
+        stat3.textContent = "6.69%";
+        stat4.textContent = "7.51%";
+    }
+
     svg.selectAll(".bar")
         .data(displayData)
         .enter()
@@ -85,11 +131,19 @@ d3.json("data/calendarHeatMap.json").then((data) => {
                 .style("display", null)
                 .html(formatTooltipData(d))
                 .style("left", event.pageX + 10 + "px")
-                .style("top", event.pageY + 20 + "px");
+                .style("top", event.pageY - 100 + "px");
+            updateStats(d);
+            const customEvent = new CustomEvent("updatePieChart", {
+                detail: d,
+            });
+            document.dispatchEvent(customEvent);
         })
         .on("mouseout", function () {
             // 隐藏提示框
             d3.select("#tooltip").style("display", "none");
+            restoreOriginalStats();
+            const resetEvent = new CustomEvent("resetPieChart");
+            document.dispatchEvent(resetEvent);
         });
 
     // 添加 x 轴和 y 轴
@@ -159,7 +213,7 @@ d3.json("data/calendarHeatMap.json").then((data) => {
         .attr("width", 600)
         .attr("height", 100)
         .append("g")
-        .attr("transform", "translate(30,30)");
+        .attr("transform", "translate(60,50)");
     gSlider.call(slider);
 
     // 创建垂直滑块
@@ -168,7 +222,7 @@ d3.json("data/calendarHeatMap.json").then((data) => {
         .min(1)
         .max(60) // 假设最多显示60个条形图
         .step(1)
-        .height(200)
+        .height(320)
         .tickFormat(d3.format("d"))
         .ticks(20)
         .default(maxBars)
@@ -181,9 +235,9 @@ d3.json("data/calendarHeatMap.json").then((data) => {
         .select("#slider-vertical")
         .append("svg")
         .attr("width", 100)
-        .attr("height", 300)
+        .attr("height", 400)
         .append("g")
-        .attr("transform", "translate(60,30)");
+        .attr("transform", "translate(60,40)");
 
     gSliderVertical.call(sliderVertical);
 
@@ -222,10 +276,19 @@ d3.json("data/calendarHeatMap.json").then((data) => {
                     .style("display", null)
                     .html(formatTooltipData(d))
                     .style("left", event.pageX + 10 + "px")
-                    .style("top", event.pageY + 20 + "px");
+                    .style("top", event.pageY - 100 + "px");
+                updateStats(d);
+                const customEvent = new CustomEvent("updatePieChart", {
+                    detail: d,
+                });
+                document.dispatchEvent(customEvent);
             })
             .on("mouseout", function () {
                 d3.select("#tooltip").style("display", "none");
+                restoreOriginalStats();
+                restoreOriginalStats();
+                const resetEvent = new CustomEvent("resetPieChart");
+                document.dispatchEvent(resetEvent);
             })
             .transition()
             .duration(300)

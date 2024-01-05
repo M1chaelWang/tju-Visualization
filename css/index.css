@@ -8,26 +8,29 @@ body {
     width: 100%;
     background-color: rgb(40, 53, 65);
     display: flex;
-    justify-content: left;
-    align-items: top;
+    justify-content: center;
 }
 .wrapper .statsBox {
     background-color: #1a2327;
     background: linear-gradient(to right, #111111, rgb(40, 53, 65));
     color: white;
     width: 22vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 .wrapper .statsBox .title {
     font-size: 1.5vw;
     margin: 0;
-    margin-top: 8vw;
+    margin-top: 2vw;
     text-align: center;
 }
 .wrapper .statsBox .stats {
     font-size: 2vw;
     margin-left: 3vw;
     margin-right: 3vw;
-    margin-top: 5vw;
+    margin-top: 1.5vw;
     width: 20vw;
 }
 .wrapper .statsBox .stats ul {
@@ -37,7 +40,7 @@ body {
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: left;
+    justify-content: center;
     align-content: center;
 }
 .wrapper .statsBox .stats ul li {
@@ -45,7 +48,7 @@ body {
     display: flex;
     margin: 1vw;
     flex-direction: column;
-    justify-content: top;
+    justify-content: center;
     align-items: center;
 }
 .wrapper .statsBox .stats ul li i {
@@ -63,10 +66,41 @@ body {
     color: orange;
     font-weight: bold;
 }
+.wrapper .statsBox .legend {
+    margin-top: 3vw;
+    list-style-type: none;
+    font-size: 0.8vw;
+    color: #aaa;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 0;
+}
+.wrapper .statsBox .legend .barLegend {
+    margin-right: 3vw;
+}
+.wrapper .statsBox .legend i {
+    margin-top: 0.5vw;
+}
+.wrapper .statsBox .legend .barLegend .first i {
+    color: #ff5656;
+}
+.wrapper .statsBox .legend .barLegend .second i {
+    color: rgb(158, 255, 158);
+}
+.wrapper .statsBox .legend .barLegend .third i {
+    color: rgb(121, 121, 255);
+}
+.wrapper .statsBox .legend .lineLegend .first i {
+    color: rgb(255, 190, 68);
+}
+.wrapper .statsBox .legend .lineLegend .second i {
+    color: rgb(255, 255, 104);
+}
 .wrapper .charts .lineAndMap {
     display: flex;
     justify-content: left;
-    align-items: top;
+    align-items: start;
     margin: 0;
 }
 .wrapper .charts .lineAndMap .buttons {
@@ -75,26 +109,35 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0;
-    margin-top: 0.5vw;
 }
 .wrapper .charts .lineAndMap .buttons li {
     margin-right: 0.5vw;
 }
+.wrapper .charts .lineAndMap .buttons li button{
+    background-color: #1a2327;
+    color: white;
+    border: 0;
+    box-sizing: content-box;
+    border-radius: 5px;
+}
+.wrapper .charts .lineAndMap .buttons li button:hover {
+    background-color: #a54b4a;
+}
 .wrapper .charts .lineAndMap #map {
     width: 45vw;
-    height: 25vw;
+    height: 23vw;
 }
 .wrapper .charts .lineAndMap #heatMap {
     width: 45vw;
-    height: 25vw;
+    height: 23vw;
 }
 .wrapper .charts .lineAndMap #startHex {
     width: 45vw;
-    height: 25vw;
+    height: 23vw;
 }
 .wrapper .charts .lineAndMap #destHex {
     width: 45vw;
-    height: 25vw;
+    height: 23vw;
 }
 .wrapper .charts .lineAndMap .lineChart .button {
     display: flex;
@@ -102,38 +145,50 @@ body {
     align-items: center;
     margin-right: 2vw;
 }
+.wrapper .charts .lineAndMap .lineChart .button button{
+    background-color: #1a2327;
+    color: white;
+    border: 0;
+    box-sizing: content-box;
+    border-radius: 5px;
+}
+.wrapper .charts .lineAndMap .lineChart .button button:hover {
+    background-color: #a54b4a;
+}
 .wrapper .charts .lineAndMap .lineChart #dataSetName {
     color: white;
     margin-right: 2vw;
 }
 
-.wrapper .charts .barCharAndLegend {
+.wrapper .charts .barAndPie {
     display: flex;
     justify-content: left;
-    align-items: center;
+    align-items: start;
+    margin: 0;
+    padding: 0;
 }
-.wrapper .charts .barCharAndLegend .barChart {
+.wrapper .charts .barAndPie .barChart {
     margin: 2vw;
 }
-.wrapper .charts .barCharAndLegend .barChart .barAndVerticalSlider {
+.wrapper .charts .barAndPie .barChart .barAndVerticalSlider {
     display: flex;
     justify-content: left;
     align-items: center;
     height: 10vw;
 }
-.wrapper .charts .barCharAndLegend .barChart .barAndVerticalSlider .bar {
+.wrapper .charts .barAndPie .barChart .barAndVerticalSlider .bar {
     fill: #bed2ee;
 }
 
-.wrapper .charts .barCharAndLegend .barChart .barAndVerticalSlider .bar:hover {
+.wrapper .charts .barAndPie .barChart .barAndVerticalSlider .bar:hover {
     fill: orange;
 }
-.wrapper .charts .barCharAndLegend .barChart #slider {
+.wrapper .charts .barAndPie .barChart #slider {
     display: flex;
     justify-content: left;
     align-items: center;
 }
-.wrapper .charts .barCharAndLegend .barChart #tooltip {
+.wrapper .charts .barAndPie .barChart #tooltip {
     position: absolute;
     text-align: left;
     width: auto;
@@ -145,31 +200,4 @@ body {
     border-radius: 8px;
     pointer-events: none;
     opacity: 1;
-}
-.wrapper .charts .barCharAndLegend .legend {
-    list-style-type: none;
-    font-size: 1vw;
-    color: white;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    margin-left: 4vw;
-}
-.wrapper .charts .barCharAndLegend .legend .barLegend {
-    margin-right: 3vw;
-}
-.wrapper .charts .barCharAndLegend .legend .barLegend .first i {
-    color: #ff5656;
-}
-.wrapper .charts .barCharAndLegend .legend .barLegend .second i {
-    color: rgb(158, 255, 158);
-}
-.wrapper .charts .barCharAndLegend .legend .barLegend .third i {
-    color: rgb(121, 121, 255);
-}
-.wrapper .charts .barCharAndLegend .legend .lineLegend .first i {
-    color: rgb(255, 190, 68);
-}
-.wrapper .charts .barCharAndLegend .legend .lineLegend .second i {
-    color: rgb(255, 255, 104);
 }

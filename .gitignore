@@ -1,3 +1,4 @@
-data/*.csv
+data/daily_stats/*
+data/hourly_stats/*
 data/Haikou_Order/*
 data/Haikou_Order_Cleaned/*

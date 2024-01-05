@@ -19,18 +19,20 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function loadData() {
-    d3.csv("data/hourly_stats_non_vactions.csv").then(function (data) {
+    d3.csv("data/hourly_stats/hourly_stats_non_vactions.csv").then(function (
+        data
+    ) {
         data1 = data;
         currentData = data1;
         updateChart(data1);
     });
-    d3.csv("data/hourly_stats_51.csv").then(function (data) {
+    d3.csv("data/hourly_stats/hourly_stats_51.csv").then(function (data) {
         data2 = data;
     });
-    d3.csv("data/hourly_stats_duanwu.csv").then(function (data) {
+    d3.csv("data/hourly_stats/hourly_stats_duanwu.csv").then(function (data) {
         data3 = data;
     });
-    d3.csv("data/hourly_stats_101.csv").then(function (data) {
+    d3.csv("data/hourly_stats/hourly_stats_101.csv").then(function (data) {
         data4 = data;
     });
 }
@@ -86,6 +88,7 @@ function updateChart(data) {
         d3.max(data, (d) => parseInt(d.average_distance) / 1000),
     ]);
 
+    const t = d3.transition().duration(200);
     g.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale))
@@ -141,13 +144,13 @@ function updateChart(data) {
             // 添加信息提示框
             g.append("text")
                 .attr("class", "tooltip")
-                .attr("x", xScale(d["hour"]) + 10)
+                .attr("x", xScale(d["hour"]) - 150)
                 .attr("y", yScale1(d["average_order_count"]) - 10)
                 .text(
                     "Hour: " +
                         d["hour"] +
                         ", Order Count: " +
-                        d["average_order_count"]
+                        (d["average_order_count"] * 1).toFixed(2)
                 )
                 .attr("font-size", "12px")
                 .style("opacity", 0)
@@ -182,7 +185,7 @@ function updateChart(data) {
 
             g.append("text")
                 .attr("class", "tooltip")
-                .attr("x", xScale(d["hour"]) + 10)
+                .attr("x", xScale(d["hour"]) - 150)
                 .attr("y", yScale2(d["average_distance"] / 1000) - 10)
                 .text(
                     "Hour: " +
