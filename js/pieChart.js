@@ -1,15 +1,15 @@
 const initialData = [
     { name: "秀英区", value: 0.1198 },
     { name: "龙华区", value: 0.4087 },
-    { name: "琼山区", value: 0.2905 },
-    { name: "美兰区", value: 0.1809 },
+    { name: "琼山区", value: 0.1809 },
+    { name: "美兰区", value: 0.2905 },
 ];
 
 let pie = d3
     .pie()
     .value((d) => d.value)
     .padAngle(0.025)(initialData);
-let arcMkr = d3.arc().innerRadius(45).outerRadius(130).cornerRadius(10);
+let arcMkr = d3.arc().innerRadius(45).outerRadius(140).cornerRadius(10);
 
 let scC = d3.scaleOrdinal(d3.schemePastel2).domain(pie.map((d) => d.index));
 
@@ -99,8 +99,8 @@ document.addEventListener("resetPieChart", function () {
     const pieData = [
         { name: "秀英区", value: 0.1198 },
         { name: "龙华区", value: 0.4087 },
-        { name: "琼山区", value: 0.2905 },
-        { name: "美兰区", value: 0.1809 },
+        { name: "琼山区", value: 0.1809 },
+        { name: "美兰区", value: 0.2905 },
     ];
 
     d3.select("#pie").selectAll("*").remove();
