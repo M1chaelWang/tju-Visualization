@@ -7,13 +7,13 @@ $.get("./data/Haikou_Order_Cleaned/cleaned_data_test.csv", function (data) {
 
             const map = new AMap.Map("destHex", {
                 mapStyle: "amap://styles/grey",
-                zoom: 13,
+                zoom: 11.5,
                 center: [110.33, 20.01],
             });
 
             var layer = new Loca.HexagonLayer({
                 map: map,
-                fitView: true,
+                fitView: false,
             });
 
             function updatestartHex(targetTime) {

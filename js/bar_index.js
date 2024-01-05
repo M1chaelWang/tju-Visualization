@@ -80,26 +80,162 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
         节假日: ${d.Holiday}`;
     }
 
+    let initialStats = {
+        title: "日均订单量",
+        stat1: 64172,
+        stat2: 0.9906,
+        stat3: 0.0669,
+        stat4: 0.0751,
+    };
+
+    let temp1;
+    let temp2;
+    let temp3;
+    let temp4;
+    let animationInProgress = false;
+
     function updateStats(data) {
-        const date = data.Date;
         const title = document.querySelector(".stats .first p:nth-child(2)");
         const stat1 = document.querySelector(".stats .first p:nth-child(3)");
         const stat2 = document.querySelector(".stats .second p:nth-child(3)");
         const stat3 = document.querySelector(".stats .third p:nth-child(3)");
         const stat4 = document.querySelector(".stats .fourth p:nth-child(3)");
         const formatAsPercentage = (value) => {
-            return (value * 1).toLocaleString("en-US", {
-                style: "percent",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            });
+            return (value * 100).toFixed(2) + "%";
         };
 
-        title.textContent = "日订单总量";
-        stat1.textContent = data.Count;
-        stat2.textContent = formatAsPercentage(data.FastCar);
-        stat3.textContent = formatAsPercentage(data.HighCost);
-        stat4.textContent = formatAsPercentage(data.LongTime);
+        const totalCount = data.Count;
+        const animationDuration = 5000;
+        let currentValue = initialStats.stat1;
+        let currentStat2 = initialStats.stat2;
+        let currentStat3 = initialStats.stat3;
+        let currentStat4 = initialStats.stat4;
+
+        const update = () => {
+            const step1 = Math.floor(
+                Math.abs(totalCount - initialStats.stat1) /
+                    (animationDuration / 3)
+            );
+            const step2 =
+                Math.abs(data.FastCar - initialStats.stat2) /
+                (animationDuration / 3);
+            const step3 =
+                Math.abs(data.HighCost - initialStats.stat3) /
+                (animationDuration / 3);
+            const step4 =
+                Math.abs(data.LongTime - initialStats.stat4) /
+                (animationDuration / 3);
+            if (currentValue < totalCount) {
+                currentValue += step1;
+                if (currentValue < totalCount) {
+                    title.textContent = "日订单总量";
+                    stat1.textContent = currentValue;
+                    temp1 = currentValue;
+                    requestAnimationFrame(update);
+                } else {
+                    title.textContent = "日订单总量";
+                    currentValue = totalCount;
+                    stat1.textContent = totalCount;
+                    temp1 = totalCount;
+                }
+            } else {
+                currentValue -= step1;
+                if (currentValue > totalCount) {
+                    title.textContent = "日订单总量";
+                    stat1.textContent = currentValue;
+                    temp1 = currentValue;
+                    requestAnimationFrame(update);
+                } else {
+                    title.textContent = "日订单总量";
+                    currentValue = totalCount;
+                    stat1.textContent = totalCount;
+                    temp1 = totalCount;
+                }
+            }
+
+            if (currentStat2 < data.FastCar) {
+                currentStat2 += step2;
+                if (currentStat2 < data.FastCar) {
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                    temp2 = currentStat2;
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat2 = data.FastCar;
+                    temp2 = currentStat2;
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                }
+            } else {
+                currentStat2 -= step2;
+                if (currentStat2 > data.FastCar) {
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                    temp2 = currentStat2;
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat2 = data.FastCar;
+                    temp2 = currentStat2;
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                }
+            }
+            if (currentStat3 < data.HighCost) {
+                currentStat3 += step3;
+                if (currentStat3 < data.HighCost) {
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                    temp3 = currentStat3;
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat3 = data.HighCost;
+                    temp3 = currentStat3;
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                }
+            } else {
+                currentStat3 -= step3;
+                if (currentStat3 > data.HighCost) {
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                    temp3 = currentStat3;
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat3 = data.HighCost;
+                    temp3 = currentStat3;
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                }
+            }
+            if (currentStat4 < data.LongTime) {
+                currentStat4 += step4;
+                if (currentStat4 < data.LongTime) {
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                    temp4 = currentStat4;
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat4 = data.LongTime;
+                    temp4 = currentStat4;
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                }
+            } else {
+                currentStat4 -= step4;
+                if (currentStat4 > data.LongTime) {
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                    temp4 = currentStat4;
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat4 = data.LongTime;
+                    temp4 = currentStat4;
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                }
+            }
+            if (!animationInProgress) {
+                animationInProgress = true;
+                // 取消先前的动画
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                }
+                // 更新动画
+                animationFrame = requestAnimationFrame(() => {
+                    animationInProgress = false;
+                    update();
+                });
+            }
+        };
+        update();
     }
 
     function restoreOriginalStats() {
@@ -108,13 +244,124 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
         const stat2 = document.querySelector(".stats .second p:nth-child(3)");
         const stat3 = document.querySelector(".stats .third p:nth-child(3)");
         const stat4 = document.querySelector(".stats .fourth p:nth-child(3)");
-        title.textContent = "日均订单量";
-        stat1.textContent = 64172;
-        stat2.textContent = "99.06%";
-        stat3.textContent = "6.69%";
-        stat4.textContent = "7.51%";
+        const formatAsPercentage = (value) => {
+            return (value * 100).toFixed(2) + "%";
+        };
+
+        const totalCount = initialStats.stat1;
+        const animationDuration = 5000;
+        let currentValue = temp1;
+        let currentStat2 = temp2;
+        let currentStat3 = temp3;
+        let currentStat4 = temp4;
+        const update = () => {
+            const step1 = Math.floor(
+                Math.abs(temp1 - initialStats.stat1) / (animationDuration / 3)
+            );
+            const step2 =
+                Math.abs(temp2 - initialStats.stat2) / (animationDuration / 3);
+            const step3 =
+                Math.abs(temp3 - initialStats.stat3) / (animationDuration / 3);
+            const step4 =
+                Math.abs(temp4 - initialStats.stat4) / (animationDuration / 3);
+            if (currentValue < totalCount) {
+                currentValue += step1;
+                if (currentValue < totalCount) {
+                    title.textContent = "日均订单量";
+                    stat1.textContent = currentValue;
+                    requestAnimationFrame(update);
+                } else {
+                    title.textContent = "日均订单量";
+                    currentValue = totalCount;
+                    stat1.textContent = totalCount;
+                }
+            } else {
+                currentValue -= step1;
+                if (currentValue > totalCount) {
+                    title.textContent = "日均订单量";
+                    stat1.textContent = currentValue;
+                    requestAnimationFrame(update);
+                } else {
+                    title.textContent = "日均订单量";
+                    currentValue = totalCount;
+                    stat1.textContent = totalCount;
+                }
+            }
+
+            if (currentStat2 < initialStats.stat2) {
+                currentStat2 += step2;
+                if (currentStat2 < initialStats.stat2) {
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat2 = initialStats.stat2;
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                }
+            } else {
+                currentStat2 -= step2;
+                if (currentStat2 > initialStats.stat2) {
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat2 = initialStats.stat2;
+                    stat2.textContent = formatAsPercentage(currentStat2);
+                }
+            }
+            if (currentStat3 < initialStats.stat3) {
+                currentStat3 += step3;
+                if (currentStat3 < initialStats.stat3) {
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat3 = initialStats.stat3;
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                }
+            } else {
+                currentStat3 -= step3;
+                if (currentStat3 > initialStats.stat3) {
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat3 = initialStats.stat3;
+                    stat3.textContent = formatAsPercentage(currentStat3);
+                }
+            }
+            if (currentStat4 < initialStats.stat4) {
+                currentStat4 += step4;
+                if (currentStat4 < initialStats.stat4) {
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat4 = initialStats.stat4;
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                }
+            } else {
+                currentStat4 -= step4;
+                if (currentStat4 > initialStats.stat4) {
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                    requestAnimationFrame(update);
+                } else {
+                    currentStat4 = initialStats.stat4;
+                    stat4.textContent = formatAsPercentage(currentStat4);
+                }
+            }
+            if (!animationInProgress) {
+                animationInProgress = true;
+                // 取消先前的动画
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                }
+                // 更新动画
+                animationFrame = requestAnimationFrame(() => {
+                    animationInProgress = false;
+                    update();
+                });
+            }
+        };
+        update();
     }
 
+    let hoverDelayTimer;
     svg.selectAll(".bar")
         .data(displayData)
         .enter()
@@ -125,25 +372,31 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
         .attr("y", (d) => y(d.Count))
         .attr("height", (d) => height - y(d.Count))
         .on("mouseover", function (event, d) {
+            clearTimeout(hoverDelayTimer);
             // 显示提示框
-            //console.log("Mouseover event triggered", d);
             d3.select("#tooltip")
                 .style("display", null)
                 .html(formatTooltipData(d))
                 .style("left", event.pageX + 10 + "px")
                 .style("top", event.pageY - 100 + "px");
-            updateStats(d);
-            const customEvent = new CustomEvent("updatePieChart", {
-                detail: d,
-            });
-            document.dispatchEvent(customEvent);
+            hoverDelayTimer = setTimeout(() => {
+                updateStats(d);
+                const customEvent = new CustomEvent("updatePieChart", {
+                    detail: d,
+                });
+                document.dispatchEvent(customEvent);
+            }, 100);
         })
         .on("mouseout", function () {
+            clearTimeout(hoverDelayTimer);
             // 隐藏提示框
             d3.select("#tooltip").style("display", "none");
-            restoreOriginalStats();
-            const resetEvent = new CustomEvent("resetPieChart");
-            document.dispatchEvent(resetEvent);
+            hoverDelayTimer = setTimeout(() => {
+                // 隐藏提示框等操作
+                restoreOriginalStats();
+                const resetEvent = new CustomEvent("resetPieChart");
+                document.dispatchEvent(resetEvent);
+            }, 100); // 设置一个延迟时间
         });
 
     // 添加 x 轴和 y 轴
@@ -272,23 +525,31 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
             .attr("y", y(0))
             .attr("height", 0)
             .on("mouseover", function (event, d) {
+                clearTimeout(hoverDelayTimer);
+                // 显示提示框
                 d3.select("#tooltip")
                     .style("display", null)
                     .html(formatTooltipData(d))
                     .style("left", event.pageX + 10 + "px")
                     .style("top", event.pageY - 100 + "px");
-                updateStats(d);
-                const customEvent = new CustomEvent("updatePieChart", {
-                    detail: d,
-                });
-                document.dispatchEvent(customEvent);
+                hoverDelayTimer = setTimeout(() => {
+                    updateStats(d);
+                    const customEvent = new CustomEvent("updatePieChart", {
+                        detail: d,
+                    });
+                    document.dispatchEvent(customEvent);
+                }, 100);
             })
             .on("mouseout", function () {
+                clearTimeout(hoverDelayTimer);
+                // 隐藏提示框
                 d3.select("#tooltip").style("display", "none");
-                restoreOriginalStats();
-                restoreOriginalStats();
-                const resetEvent = new CustomEvent("resetPieChart");
-                document.dispatchEvent(resetEvent);
+                hoverDelayTimer = setTimeout(() => {
+                    // 隐藏提示框等操作
+                    restoreOriginalStats();
+                    const resetEvent = new CustomEvent("resetPieChart");
+                    document.dispatchEvent(resetEvent);
+                }, 100); // 设置一个延迟时间
             })
             .transition()
             .duration(300)

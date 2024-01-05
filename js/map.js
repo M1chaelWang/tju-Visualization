@@ -7,7 +7,7 @@ $.get("./data/Haikou_Order_Cleaned/cleaned_data_test.csv", function (data) {
 
             const map = new AMap.Map("map", {
                 mapStyle: "amap://styles/grey",
-                zoom: 12.0,
+                zoom: 11.5,
                 center: [110.33, 20.01],
             });
 

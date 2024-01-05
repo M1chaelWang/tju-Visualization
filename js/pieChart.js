@@ -11,7 +11,7 @@ let pie = d3
     .padAngle(0.025)(initialData);
 let arcMkr = d3.arc().innerRadius(45).outerRadius(140).cornerRadius(10);
 
-let scC = d3.scaleOrdinal(d3.schemePastel2).domain(pie.map((d) => d.index));
+let scC = d3.scaleOrdinal(d3.schemeBlues[4]).domain(pie.map((d, i) => i));
 
 let pieGraph = d3
     .select("#pie")
@@ -31,8 +31,9 @@ pieGraph
     .enter()
     .append("path")
     .attr("d", arcMkr)
-    .attr("fill", (d) => scC(d.index))
-    .attr("stroke", "grey");
+    .attr("fill", (d, i) => scC(i))
+    .attr("stroke", "black")
+    .attr("stroke-width", 1);
 
 pieGraph
     .selectAll("text")
@@ -40,10 +41,10 @@ pieGraph
     .enter()
     .append("text")
     .text((d) => d.data.name + formatAsPercentage(d.data.value))
-    .attr("x", (d) => arcMkr.innerRadius(50).centroid(d)[0])
-    .attr("y", (d) => arcMkr.innerRadius(50).centroid(d)[1])
+    .attr("x", (d) => arcMkr.innerRadius(55).centroid(d)[0])
+    .attr("y", (d) => arcMkr.innerRadius(55).centroid(d)[1])
     .attr("font-family", "sans-serif")
-    .attr("font-size", 14)
+    .attr("font-size", 12)
     .attr("text-anchor", "middle");
 
 document.addEventListener("updatePieChart", function (event) {
@@ -65,7 +66,7 @@ document.addEventListener("updatePieChart", function (event) {
         .padAngle(0.025)(pieData);
     let arcMkr = d3.arc().innerRadius(45).outerRadius(140).cornerRadius(10);
 
-    let scC = d3.scaleOrdinal(d3.schemePastel2).domain(pie.map((d) => d.index));
+    let scC = d3.scaleOrdinal(d3.schemeBlues[4]).domain(pie.map((d, i) => i));
 
     let pieGraph = d3
         .select("#pie")
@@ -78,8 +79,9 @@ document.addEventListener("updatePieChart", function (event) {
         .enter()
         .append("path")
         .attr("d", arcMkr)
-        .attr("fill", (d) => scC(d.index))
-        .attr("stroke", "grey");
+        .attr("fill", (d, i) => scC(i))
+        .attr("stroke", "black")
+        .attr("stroke-width", 1);
 
     pieGraph
         .selectAll("text")
@@ -87,10 +89,10 @@ document.addEventListener("updatePieChart", function (event) {
         .enter()
         .append("text")
         .text((d) => d.data.name + formatAsPercentage(d.data.value))
-        .attr("x", (d) => arcMkr.innerRadius(50).centroid(d)[0])
-        .attr("y", (d) => arcMkr.innerRadius(50).centroid(d)[1])
+        .attr("x", (d) => arcMkr.innerRadius(55).centroid(d)[0])
+        .attr("y", (d) => arcMkr.innerRadius(55).centroid(d)[1])
         .attr("font-family", "sans-serif")
-        .attr("font-size", 14)
+        .attr("font-size", 12)
         .attr("text-anchor", "middle");
 });
 
@@ -111,7 +113,7 @@ document.addEventListener("resetPieChart", function () {
         .padAngle(0.025)(pieData);
     let arcMkr = d3.arc().innerRadius(45).outerRadius(140).cornerRadius(10);
 
-    let scC = d3.scaleOrdinal(d3.schemePastel2).domain(pie.map((d) => d.index));
+    let scC = d3.scaleOrdinal(d3.schemeBlues[4]).domain(pie.map((d, i) => i));
 
     let pieGraph = d3
         .select("#pie")
@@ -124,8 +126,9 @@ document.addEventListener("resetPieChart", function () {
         .enter()
         .append("path")
         .attr("d", arcMkr)
-        .attr("fill", (d) => scC(d.index))
-        .attr("stroke", "grey");
+        .attr("fill", (d, i) => scC(i))
+        .attr("stroke", "black")
+        .attr("stroke-width", 1);
 
     pieGraph
         .selectAll("text")
@@ -133,9 +136,9 @@ document.addEventListener("resetPieChart", function () {
         .enter()
         .append("text")
         .text((d) => d.data.name + formatAsPercentage(d.data.value))
-        .attr("x", (d) => arcMkr.innerRadius(50).centroid(d)[0])
-        .attr("y", (d) => arcMkr.innerRadius(50).centroid(d)[1])
+        .attr("x", (d) => arcMkr.innerRadius(55).centroid(d)[0])
+        .attr("y", (d) => arcMkr.innerRadius(55).centroid(d)[1])
         .attr("font-family", "sans-serif")
-        .attr("font-size", 14)
+        .attr("font-size", 12)
         .attr("text-anchor", "middle");
 });

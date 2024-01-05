@@ -7,7 +7,7 @@ $.get("./data/Haikou_Order_Cleaned/cleaned_data_test.csv", function (data) {
 
             const map = new AMap.Map("heatMap", {
                 mapStyle: "amap://styles/grey",
-                zoom: 13,
+                zoom: 11.5,
                 pitch: 30,
                 center: [110.33, 20.01],
                 viewMode: "3D",
