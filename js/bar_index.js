@@ -222,18 +222,6 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
                     stat4.textContent = formatAsPercentage(currentStat4);
                 }
             }
-            if (!animationInProgress) {
-                animationInProgress = true;
-                // 取消先前的动画
-                if (animationFrame) {
-                    cancelAnimationFrame(animationFrame);
-                }
-                // 更新动画
-                animationFrame = requestAnimationFrame(() => {
-                    animationInProgress = false;
-                    update();
-                });
-            }
         };
         update();
     }
@@ -345,18 +333,6 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
                     stat4.textContent = formatAsPercentage(currentStat4);
                 }
             }
-            if (!animationInProgress) {
-                animationInProgress = true;
-                // 取消先前的动画
-                if (animationFrame) {
-                    cancelAnimationFrame(animationFrame);
-                }
-                // 更新动画
-                animationFrame = requestAnimationFrame(() => {
-                    animationInProgress = false;
-                    update();
-                });
-            }
         };
         update();
     }
@@ -386,6 +362,10 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
                 });
                 document.dispatchEvent(customEvent);
             }, 100);
+        })
+        .on("click", function (event, d) {
+            var clickedDate = d3.timeFormat("%Y-%m-%d")(d.Date);
+            globalVariable = clickedDate;
         })
         .on("mouseout", function () {
             clearTimeout(hoverDelayTimer);
@@ -539,6 +519,10 @@ d3.json("data/daily_stats/calendarHeatMap.json").then((data) => {
                     });
                     document.dispatchEvent(customEvent);
                 }, 100);
+            })
+            .on("click", function (event, d) {
+                var clickedDate = d3.timeFormat("%Y-%m-%d")(d.Date);
+                globalVariable = clickedDate;
             })
             .on("mouseout", function () {
                 clearTimeout(hoverDelayTimer);
